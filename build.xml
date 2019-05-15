@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="run" name="IMAC Project">
+    <target name="run" depends="compile">
+        <java fork="true" classname="fr.upem.capcha.ui.MainUi">
+            <classpath path="classes" />
+        </java>
+    </target>
+    <target name="compile">
+        <copy todir="classes">
+            <fileset dir="./src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <javac includeantruntime="false" srcdir="./src" destdir="classes">
+        </javac>
+    </target>
+</project>

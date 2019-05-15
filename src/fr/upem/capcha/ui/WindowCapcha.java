@@ -1,5 +1,8 @@
 package fr.upem.capcha.ui;
 
+import com.sun.tools.javac.Main;
+import fr.upem.capcha.ui.images.panneaux.Panneau;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -10,13 +13,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ArrayList;
 
 public class WindowCapcha {
 
     private JFrame frame;
     private ArrayList<URL> selectedImages;
-    private ArrayList<String> listImages;
+    private List<String> listImages;
+    private ObjectCapcha imagesToSearch =  ObjectCapcha.randomObject();;
+
 
     private WindowCapcha () {
         this("Capcha");
@@ -25,7 +31,7 @@ public class WindowCapcha {
     public WindowCapcha ( String name) {
         frame = new JFrame(name);
         selectedImages = new ArrayList<URL>();
-        listImages = new ArrayList<String>();
+        listImages = null;
     }
 
     public void initFrame () throws IOException {
@@ -37,12 +43,22 @@ public class WindowCapcha {
 
         JButton okButton = createOkButton();
 
-        initListImages();
+       // initListImages();
+        Panneau p = new Panneau();
 
-        for( String s : listImages)
-            frame.add(createLabelImage(s)); //ajouter des composants à la fenêtre
+        listImages = p.getPhotos();
+        //p.getRandomPhotosURL(8);
+        System.out.println(p.isPhotoCorrect("images/panneaux/route panneau.jpg") + "  photo correct");
 
-        frame.add(new JTextArea("Cliquez n'importe où ... juste pour tester l'interface !"));
+        System.out.println(listImages);
+
+        for( String u : listImages)
+            frame.add(createLabelImage(u)); //ajouter des composants à la fenêtre
+
+//        frame.add(createLabelImage());
+
+
+        frame.add(new JTextArea("Sélectionnez chaque " + imagesToSearch +" dans les images ci-dessus."));
 
 
         frame.add(okButton);
@@ -51,7 +67,8 @@ public class WindowCapcha {
 
     }
 
-    public void listFilesForFolder(final File folder, StringBuilder str) throws IOException {
+
+   /* public void listFilesForFolder(final File folder, StringBuilder str) throws IOException {
 
         for (final File fileEntry : folder.listFiles()) {
             System.out.println(fileEntry.getName());
@@ -67,19 +84,13 @@ public class WindowCapcha {
                 }
             }
         }
-    }
+    }*/
 
-    private void initListImages () throws IOException {
+   /* private void initListImages () throws IOException {
 
         final File folder = new File(System.getProperty("user.dir") + "/src/fr/upem/capcha/ui/images");
         listFilesForFolder(folder, new StringBuilder("images"));
-    }
-
-
-    private boolean verificationMatch () {
-        return true;
-    }
-
+    }*/
 
     private GridLayout createLayout(){
         return new GridLayout(4,3);
@@ -94,7 +105,16 @@ public class WindowCapcha {
 
                     @Override
                     public void run() { // c'est un runnable
-                        System.out.println(verificationMatch());
+                        try {
+                            Class.forName("Panneau").newInstance();
+                        } catch (InstantiationException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
             }
