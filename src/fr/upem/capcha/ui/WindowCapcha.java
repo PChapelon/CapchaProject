@@ -1,6 +1,6 @@
 package fr.upem.capcha.ui;
 
-import com.sun.tools.javac.Main;
+import fr.upem.capcha.ui.images.I_Images;
 import fr.upem.capcha.ui.images.Images;
 import fr.upem.capcha.ui.images.panneaux.Panneau;
 import fr.upem.capcha.ui.images.panneaux.carres.PanneauCarre;
@@ -15,17 +15,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ArrayList;
 
 public class WindowCapcha {
 
     private JFrame frame;
     private ArrayList<URL> selectedImages;
-    private List<String> listImages;
+    private ArrayList<String> listImages;
+    //private ObjectCapcha imagesToSearch =  ObjectCapcha.PONT;
     private ObjectCapcha imagesToSearch =  ObjectCapcha.randomObject();
     private int numberImages = 0 ;
 
@@ -37,7 +36,7 @@ public class WindowCapcha {
     public WindowCapcha ( String name) {
         frame = new JFrame(name);
         selectedImages = new ArrayList<URL>();
-        listImages = null;
+        listImages = new ArrayList<String>();
     }
 
     public void initFrame () throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
@@ -53,7 +52,7 @@ public class WindowCapcha {
 
 
 
-        frame.add(new JTextArea("Sélectionnez chaque " + imagesToSearch +" dans les images ci-dessus."));
+        frame.add(new JTextArea("Sélectionnez chaque " + imagesToSearch.toString() +" dans les images ci-dessus. \nIl y en a " + numberImages));
 
 
         frame.add(okButton);
@@ -83,8 +82,8 @@ public class WindowCapcha {
     }
 
     private void initListImages() throws ClassNotFoundException, IllegalAccessException, InstantiationException, IOException {
-
-        for (int i = 0; i < 8 ; i ++){
+        numberImages = 0;
+        for (int i = 0; i < 9 ; i ++){
             Images dynamicObj;
             ObjectCapcha randObject = ObjectCapcha.randomObject();
             switch (randObject){
@@ -101,22 +100,23 @@ public class WindowCapcha {
                     dynamicObj = new PanneauCarre();
                     break;
                 default:
-                    dynamicObj = new PanneauRond() ;
+                    dynamicObj = new PanneauRond();
                     break;
             }
-            System.out.println(randObject.toString() + " rzrzerz");
+            if(randObject.getTypeClass() == imagesToSearch.getTypeClass())
+                numberImages ++;
             listImages.add(dynamicObj.getRandomPhotosURL());
-            System.out.println(dynamicObj.toString() + " rzrzerz");
-
         }
-
         for( String u : listImages)
             frame.add(createLabelImage(u));
     }
 
-    private boolean verificationImages(){
-        if (selectedImages.size() != numberImages)
+    private boolean verificationImages() {
+        System.out.println("images");
+        System.out.println(imagesToSearch);
+        if (selectedImages.size() != numberImages){
             return false;
+        }
         Images dynamicObj;
         switch(imagesToSearch){
             case PONT:
@@ -138,7 +138,9 @@ public class WindowCapcha {
         for (URL u : selectedImages)
         {
             if (!dynamicObj.isPhotoCorrect(u.getPath()))
+            {
                 return false;
+            }
         }
         return true;
     }

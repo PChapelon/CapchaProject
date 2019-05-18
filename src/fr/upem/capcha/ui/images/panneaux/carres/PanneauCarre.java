@@ -1,28 +1,13 @@
 package fr.upem.capcha.ui.images.panneaux.carres;
 
-import fr.upem.capcha.ui.images.Images;
+import fr.upem.capcha.ui.images.I_Images;
+import fr.upem.capcha.ui.images.panneaux.Panneau;
 
-import java.util.List;
 
-public class PanneauCarre implements Images {
-    @Override
-    public List<String> getPhotos() {
-        return null;
-    }
+public class PanneauCarre extends Panneau implements I_Images {
 
-    @Override
-    public List<String> getRandomPhotosURL(int nbPhotos) {
-        return null;
-    }
-
-    @Override
-    public String getRandomPhotosURL() {
-        return null;
-    }
-
-    @Override
-    public boolean isPhotoCorrect(String address) {
-        return false;
+    public PanneauCarre(){
+        path = "images/panneaux/carres";
     }
 
     public String toString(){
