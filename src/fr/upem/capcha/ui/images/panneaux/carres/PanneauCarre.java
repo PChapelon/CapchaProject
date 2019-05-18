@@ -5,7 +5,6 @@ import fr.upem.capcha.ui.images.Images;
 import java.util.List;
 
 public class PanneauCarre implements Images {
-
     @Override
     public List<String> getPhotos() {
         return null;
@@ -24,5 +23,9 @@ public class PanneauCarre implements Images {
     @Override
     public boolean isPhotoCorrect(String address) {
         return false;
+    }
+
+    public String toString(){
+        return "panneaucarre";
     }
 }

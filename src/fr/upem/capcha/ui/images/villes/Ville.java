@@ -1,27 +1,23 @@
-package fr.upem.capcha.ui.images.panneaux.ronds;
+package fr.upem.capcha.ui.images.villes;
 
 import fr.upem.capcha.ui.images.Images;
 
-import java.net.URL;
 import java.util.List;
 
-public class PanneauRond implements Images {
-
+public class Ville implements Images {
     @Override
-    public List<String> getPhotos(){
+    public List<String> getPhotos() {
         return null;
     }
 
     @Override
-    public List<String> getRandomPhotosURL(int nbPhotos){
+    public List<String> getRandomPhotosURL(int nbPhotos) {
         return null;
-
     }
 
     @Override
-    public String getRandomPhotosURL(){
+    public String getRandomPhotosURL() {
         return null;
-
     }
 
     @Override
@@ -29,8 +25,7 @@ public class PanneauRond implements Images {
         return false;
     }
 
-    @Override
     public String toString(){
-        return "panneaurond";
+        return "ville";
     }
 }

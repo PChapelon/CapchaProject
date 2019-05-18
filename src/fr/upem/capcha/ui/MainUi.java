@@ -14,7 +14,7 @@ java -cp classes fr.upem.capcha.ui.MainUi
 
 public class MainUi {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
 		System.out.println(" coucou");
 		WindowCapcha window = new WindowCapcha("AreYouARobot");
 		window.initFrame();

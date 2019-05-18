@@ -1,7 +1,12 @@
 package fr.upem.capcha.ui;
 
 import com.sun.tools.javac.Main;
+import fr.upem.capcha.ui.images.Images;
 import fr.upem.capcha.ui.images.panneaux.Panneau;
+import fr.upem.capcha.ui.images.panneaux.carres.PanneauCarre;
+import fr.upem.capcha.ui.images.panneaux.ronds.PanneauRond;
+import fr.upem.capcha.ui.images.ponts.Pont;
+import fr.upem.capcha.ui.images.villes.Ville;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,7 +26,8 @@ public class WindowCapcha {
     private JFrame frame;
     private ArrayList<URL> selectedImages;
     private List<String> listImages;
-    private ObjectCapcha imagesToSearch =  ObjectCapcha.randomObject();;
+    private ObjectCapcha imagesToSearch =  ObjectCapcha.randomObject();
+    private int numberImages = 0 ;
 
 
     private WindowCapcha () {
@@ -34,7 +40,7 @@ public class WindowCapcha {
         listImages = null;
     }
 
-    public void initFrame () throws IOException {
+    public void initFrame () throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         frame.setLayout(createLayout());
         frame.setSize(1024, 768);
         frame.setResizable(false);
@@ -43,19 +49,8 @@ public class WindowCapcha {
 
         JButton okButton = createOkButton();
 
-       // initListImages();
-        Panneau p = new Panneau();
+        initListImages();
 
-        listImages = p.getPhotos();
-        //p.getRandomPhotosURL(8);
-        System.out.println(p.isPhotoCorrect("images/panneaux/route panneau.jpg") + "  photo correct");
-
-        System.out.println(listImages);
-
-        for( String u : listImages)
-            frame.add(createLabelImage(u)); //ajouter des composants à la fenêtre
-
-//        frame.add(createLabelImage());
 
 
         frame.add(new JTextArea("Sélectionnez chaque " + imagesToSearch +" dans les images ci-dessus."));
@@ -66,31 +61,6 @@ public class WindowCapcha {
         frame.setVisible(true);
 
     }
-
-
-   /* public void listFilesForFolder(final File folder, StringBuilder str) throws IOException {
-
-        for (final File fileEntry : folder.listFiles()) {
-            System.out.println(fileEntry.getName());
-            if (fileEntry.isDirectory()) {
-                StringBuilder s = new StringBuilder (str.toString());
-                listFilesForFolder(fileEntry, s.append( "/" + fileEntry.getName()));
-            }
-            else {
-                if(fileEntry.getName().toLowerCase().endsWith(".jpg"))
-                {
-                    listImages.add(str.toString() + "/" + fileEntry.getName());
-                    System.out.println(fileEntry.getName() + " " + true);
-                }
-            }
-        }
-    }*/
-
-   /* private void initListImages () throws IOException {
-
-        final File folder = new File(System.getProperty("user.dir") + "/src/fr/upem/capcha/ui/images");
-        listFilesForFolder(folder, new StringBuilder("images"));
-    }*/
 
     private GridLayout createLayout(){
         return new GridLayout(4,3);
@@ -105,20 +75,72 @@ public class WindowCapcha {
 
                     @Override
                     public void run() { // c'est un runnable
-                        try {
-                            Class.forName("Panneau").newInstance();
-                        } catch (InstantiationException e) {
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
-
+                        System.out.println(verificationImages());
                     }
                 });
             }
         });
+    }
+
+    private void initListImages() throws ClassNotFoundException, IllegalAccessException, InstantiationException, IOException {
+
+        for (int i = 0; i < 8 ; i ++){
+            Images dynamicObj;
+            ObjectCapcha randObject = ObjectCapcha.randomObject();
+            switch (randObject){
+                case PONT:
+                    dynamicObj = new Pont();
+                    break;
+                case VILLE:
+                    dynamicObj = new Ville();
+                    break;
+                case PANNEAU:
+                    dynamicObj = new Panneau();
+                    break;
+                case PANNEAUCARRE:
+                    dynamicObj = new PanneauCarre();
+                    break;
+                default:
+                    dynamicObj = new PanneauRond() ;
+                    break;
+            }
+            System.out.println(randObject.toString() + " rzrzerz");
+            listImages.add(dynamicObj.getRandomPhotosURL());
+            System.out.println(dynamicObj.toString() + " rzrzerz");
+
+        }
+
+        for( String u : listImages)
+            frame.add(createLabelImage(u));
+    }
+
+    private boolean verificationImages(){
+        if (selectedImages.size() != numberImages)
+            return false;
+        Images dynamicObj;
+        switch(imagesToSearch){
+            case PONT:
+                dynamicObj = new Pont();
+                break;
+            case VILLE:
+                dynamicObj = new Ville();
+                break;
+            case PANNEAU:
+                dynamicObj = new Panneau();
+                break;
+            case PANNEAUCARRE:
+                dynamicObj = new PanneauCarre();
+                break;
+            default:
+                dynamicObj = new PanneauRond() ;
+                break;
+        }
+        for (URL u : selectedImages)
+        {
+            if (!dynamicObj.isPhotoCorrect(u.getPath()))
+                return false;
+        }
+        return true;
     }
 
     private JLabel createLabelImage(String imageLocation) throws IOException {

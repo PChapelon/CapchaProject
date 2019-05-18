@@ -10,4 +10,5 @@ public interface Images {
     public List<String> getRandomPhotosURL(int nbPhotos);
     public String getRandomPhotosURL();
     public boolean isPhotoCorrect(String address);
+    public String toString();
 }
