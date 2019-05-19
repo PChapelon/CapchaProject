@@ -23,10 +23,11 @@ public class WindowCapcha {
 
     private JFrame frame;
     private ArrayList<URL> selectedImages;
-    private ArrayList<String> listImages;
+    private ArrayList<URL> listImages;
     //private ObjectCapcha imagesToSearch =  ObjectCapcha.PONT;
     private ObjectCapcha imagesToSearch =  ObjectCapcha.randomObject();
     private int numberImages = 0 ;
+    private JFrame frameResult;
 
 
     private WindowCapcha () {
@@ -36,7 +37,7 @@ public class WindowCapcha {
     public WindowCapcha ( String name) {
         frame = new JFrame(name);
         selectedImages = new ArrayList<URL>();
-        listImages = new ArrayList<String>();
+        listImages = new ArrayList<URL>();
     }
 
     public void initFrame () throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
@@ -65,7 +66,23 @@ public class WindowCapcha {
         return new GridLayout(4,3);
     }
 
-    private JButton createOkButton(){
+    private JButton createQuitButton(){
+        return new JButton(new AbstractAction("Quitter") { //ajouter l'action du bouton
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                EventQueue.invokeLater(new Runnable() { // faire des choses dans l'interface donc appeler cela dans la queue des évènements
+
+                    @Override
+                    public void run() { // c'est un runnable
+                        //frameResult.dispose();
+                    }
+                });
+            }
+        });
+    }
+
+    private JButton createOkButton() {
         return new JButton(new AbstractAction("Suis-je un robot?") { //ajouter l'action du bouton
 
             @Override
@@ -75,14 +92,39 @@ public class WindowCapcha {
                     @Override
                     public void run() { // c'est un runnable
                         System.out.println(verificationImages());
+                        if (verificationImages()){
+                            frameResult = new JFrame();
+                            frameResult.setLayout(createLayout());
+                            frameResult.setSize(500, 300);
+                            frameResult.setResizable(false);
+
+                            frameResult.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            JButton buttonExit = createQuitButton();
+                            frame.add(new JTextArea("Vous avez réussi le capcha !!!!"));
+                            frameResult.add(buttonExit, BorderLayout.CENTER);
+                            frameResult.setVisible(true);
+                        }
+                        else {
+                            /*frame.getContentPane().removeAll();
+                            frame.setVisible(false);
+                            frame.repaint();
+                            initListImages();
+                            frame.add(new JTextArea("Sélectionnez chaque " + imagesToSearch.toString() +" dans les images ci-dessus. \nIl y en a " + numberImages));
+                            frame.add(createOkButton());
+                            frame.repaint();
+                            frame.setVisible(true);*/
+
+                        }
                     }
                 });
             }
         });
     }
 
-    private void initListImages() throws ClassNotFoundException, IllegalAccessException, InstantiationException, IOException {
+    private void initListImages()  {
         numberImages = 0;
+        listImages.clear();
+
         for (int i = 0; i < 9 ; i ++){
             Images dynamicObj;
             ObjectCapcha randObject = ObjectCapcha.randomObject();
@@ -107,8 +149,13 @@ public class WindowCapcha {
                 numberImages ++;
             listImages.add(dynamicObj.getRandomPhotosURL());
         }
-        for( String u : listImages)
-            frame.add(createLabelImage(u));
+        for( URL u : listImages) {
+            try {
+                frame.add(createLabelImage(u));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private boolean verificationImages() {
@@ -137,7 +184,7 @@ public class WindowCapcha {
         }
         for (URL u : selectedImages)
         {
-            if (!dynamicObj.isPhotoCorrect(u.getPath()))
+            if (!dynamicObj.isPhotoCorrect(u))
             {
                 return false;
             }
@@ -145,9 +192,9 @@ public class WindowCapcha {
         return true;
     }
 
-    private JLabel createLabelImage(String imageLocation) throws IOException {
+    private JLabel createLabelImage(URL url) throws IOException {
 
-        final URL url = MainUi.class.getResource(imageLocation); //Aller chercher les images !! IMPORTANT
+        //final URL url = MainUi.class.getResource(imageLocation); //Aller chercher les images !! IMPORTANT
 
         System.out.println(url);
 

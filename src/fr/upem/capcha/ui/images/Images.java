@@ -1,6 +1,8 @@
 package fr.upem.capcha.ui.images;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,13 +16,13 @@ public class Images implements I_Images {
         path = "images";
     }
 
-    public List<String> getPhotos()  {
+    public List<URL> getPhotos()  {
 
-        final File folder = new File(System.getProperty("user.dir") + "/src/fr/upem/capcha/ui/" + path);
-        return findPhotos(folder, new StringBuilder(path), new ArrayList<String>());
+        final File folder = new File(pathDirectory + path);
+        return findPhotos(folder, new StringBuilder(path), new ArrayList<URL>());
     }
 
-    private List<String> findPhotos(File folder, StringBuilder path, ArrayList<String> list ) {
+    private List<URL> findPhotos(File folder, StringBuilder path, ArrayList<URL> list ) {
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {
                 StringBuilder s = new StringBuilder (path);
@@ -29,17 +31,22 @@ public class Images implements I_Images {
             else {
                 if(fileEntry.getName().toLowerCase().endsWith(".jpg") || fileEntry.getName().toLowerCase().endsWith(".jpeg") || fileEntry.getName().toLowerCase().endsWith(".png") )
                 {
-                    list.add( path.toString() + "/" +fileEntry.getName());
+                    try {
+                        list.add(fileEntry.toURI().toURL());
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                    //list.add( path.toString() + "/" +fileEntry.getName());
                 }
             }
         }
         return list;
     }
 
-    public List<String> getRandomPhotosURL(int nbPhotos){
-        ArrayList<String> listPhotos = new ArrayList<String>();
+    public List<URL> getRandomPhotosURL(int nbPhotos){
+        ArrayList<URL> listPhotos = new ArrayList<URL>();
         listPhotos.addAll(getPhotos());
-        ArrayList<String> listRandomPhotos = new ArrayList<String>();
+        ArrayList<URL> listRandomPhotos = new ArrayList<URL>();
         Random rand = new Random();
         for (int i = 0; i < nbPhotos ; i ++){
             int indexRandom = rand.nextInt(listPhotos.size());
@@ -49,14 +56,14 @@ public class Images implements I_Images {
         return listRandomPhotos;
     }
 
-    public String getRandomPhotosURL(){
+    public URL getRandomPhotosURL(){
         return getRandomPhotosURL(1).get(0);
     }
 
-    public boolean isPhotoCorrect(String address){
-        List<String> l = getPhotos();
-        int fileLength = pathDirectory.length();
-        boolean b = l.contains(address.substring(fileLength));
+    public boolean isPhotoCorrect(URL address){
+        List<URL> l = getPhotos();
+        //int fileLength = pathDirectory.length();
+        boolean b = l.contains(address);
         return b;
     }
 

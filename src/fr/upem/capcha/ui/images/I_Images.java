@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface I_Images {
 
-    public List<String> getPhotos() ;
-    public List<String> getRandomPhotosURL(int nbPhotos);
-    public String getRandomPhotosURL();
-    public boolean isPhotoCorrect(String address);
+    public List<URL> getPhotos() ;
+    public List<URL> getRandomPhotosURL(int nbPhotos);
+    public URL getRandomPhotosURL();
+    public boolean isPhotoCorrect(URL address);
     public String toString();
     public String getPath();
 }
