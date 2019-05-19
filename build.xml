@@ -14,4 +14,9 @@
         <javac includeantruntime="false" srcdir="./src" destdir="classes">
         </javac>
     </target>
+    <jar destfile="Captcha-1.0.jar" basedir="classes" manifest="src/manifest.mf" update="on">
+        <fileset dir="src">
+            <exclude name="**/*.java" />
+        </fileset>
+    </jar>
 </project>
