@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="run" name="IMAC Project">
     <target name="run" depends="compile">
-        <java fork="true" classname="fr.upem.capcha.ui.MainUi">
+        <java fork="true" classname="fr.upem.captcha.ui.MainUi">
             <classpath path="classes" />
         </java>
     </target>
     <target name="compile">
         <copy todir="classes">
             <fileset dir="./src">
-                <exclude name="**/*.java"/>
+                <include name="**/*.jpg"/>
+                <include name="**/*.png"/>
+                <include name="**/*.jpeg"/>
             </fileset>
         </copy>
         <javac includeantruntime="false" srcdir="./src" destdir="classes">
         </javac>
     </target>
     <jar destfile="Captcha-1.0.jar" basedir="classes" manifest="src/manifest.mf" update="on">
-        <fileset dir="src">
+        <fileset dir="./src">
             <exclude name="**/*.java" />
         </fileset>
     </jar>
