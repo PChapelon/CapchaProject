@@ -70,7 +70,7 @@ public class WindowCapcha {
      * @throws ClassNotFoundException Error when finding the class in pakcges
      */
     public void initFrame () throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        frame.setLayout(createLayout());
+        frame.setLayout(createLayout()); //initializing the main frame
         frame.setSize(1024, 800);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,7 +81,7 @@ public class WindowCapcha {
         frame.add(new JTextArea("Niveau de difficulté "+difficulte+"\n"));
         frame.setVisible(true);
         
-        frameResult.setLayout(new GridLayout(2,1));
+        frameResult.setLayout(new GridLayout(2,1)); //initializing the frame of success
         frameResult.setSize(500, 300);
         frameResult.setResizable(false);
 
@@ -90,7 +90,7 @@ public class WindowCapcha {
         frameResult.add(createQuitButton(), BorderLayout.CENTER);
         frameResult.setVisible(false);
         
-    	frameFailure.setLayout(new GridLayout(2,1));
+    	frameFailure.setLayout(new GridLayout(2,1));  //initializing the frame of failure
     	frameFailure.setSize(500, 300);
         frameFailure.setResizable(false);
 
@@ -148,20 +148,20 @@ public class WindowCapcha {
                         System.out.println("Résultat du captcha : " + verificationImages());
                         if (verificationImages()){   
                             
-                            frameResult.setVisible(true);
+                            frameResult.setVisible(true); //the user succeed the test
                         }
                         else {
                             frame.setVisible(false);
                             frame.getContentPane().removeAll();
-                            difficulte ++;
+                            difficulte ++; //increase the difficulty
                             switch(difficulte) {
-                            	case 3: largeurGrille ++; break;
-                            	case 5: largeurGrille ++; break;
+                            	case 3: largeurGrille ++; break; //level 3 one more column
+                            	case 5: largeurGrille ++; break; //level 5 one more too
                             	default: break;
                             }
-                            if(difficulte <= LIMIT_DIFFICULTE) {
-                            	frame.setLayout(createLayout());
-                            	initListImages();
+                            if(difficulte <= LIMIT_DIFFICULTE) { //if the user don't fail too much times
+                            	frame.setLayout(createLayout()); //recreation of a new window
+                            	initListImages(); //loading new images and a new objective
                                 frame.add(new JTextArea("Sélectionnez chaque \n" + imagesToSearch.toString() +" \ndans les images ci-dessus."));
                                 frame.add(createOkButton());
                                 frame.add(new JTextArea("Niveau de difficulté "+difficulte+"\n"));
@@ -170,7 +170,7 @@ public class WindowCapcha {
                             }
                             else {
                             	
-                                frameFailure.setVisible(true);
+                                frameFailure.setVisible(true); //display the frame of failure
                             }
                         }
                     }
@@ -185,16 +185,16 @@ public class WindowCapcha {
     private void initListImages()  {
         numberImages = 0;
         listImages.clear();
-        imagesToSearch = typeDifficulte.randomObject(difficulte);
+        imagesToSearch = typeDifficulte.randomObject(difficulte); //select a random type of image to search
 
 
         for (int i = 0; i < largeurGrille * hauteurGrille  ; i ++){
             typeDifficulte randObject = typeDifficulte.randomObject(difficulte);
-            CategorieImage dynamicObj = getClassInstance(randObject);
+            CategorieImage dynamicObj = getClassInstance(randObject); //create a random object related of the images
             
-            if(randObject.getTypeClass() == imagesToSearch.getTypeClass())
-                numberImages ++;
-            URL u = dynamicObj.getRandomPhotosURL();
+            if(randObject.getTypeClass() == imagesToSearch.getTypeClass()) // if the random object type equals to the type of image to search
+                numberImages ++; //increase the number reprenting the images contained in the frame
+            URL u = dynamicObj.getRandomPhotosURL(); //get a random photo 
             listImages.add(u);
         }
         

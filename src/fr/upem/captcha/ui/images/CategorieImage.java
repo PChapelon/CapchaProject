@@ -30,7 +30,7 @@ public abstract class CategorieImage implements Images {
      */
     public List<URL> getPhotos()  {
     	String pathDirectory = System.getProperty("user.dir") + File.separator + "src"+ File.separator;
-        final File folder = new File(pathDirectory +  getClass().getPackageName().replace(".", File.separator));
+        final File folder = new File(pathDirectory +  getClass().getPackageName().replace(".", File.separator)); //create a fictive file at the location
         return findPhotos(folder,  new ArrayList<URL>());
     }
 
@@ -42,20 +42,18 @@ public abstract class CategorieImage implements Images {
      * @return the completed list with URL of the images in the current folder
      */
     private List<URL> findPhotos(File folder, ArrayList<URL> list ) {
-        for (final File fileEntry : folder.listFiles()) {
-            if (fileEntry.isDirectory()) {
-                findPhotos(fileEntry,  list);
+        for (final File fileEntry : folder.listFiles()) { //For all files in the directory
+            if (fileEntry.isDirectory()) { //if it is a directory
+                findPhotos(fileEntry,  list); //search inside it
             }
-            else {
+            else { 
                 if(fileEntry.getName().toLowerCase().endsWith(".jpg") || fileEntry.getName().toLowerCase().endsWith(".jpeg") || fileEntry.getName().toLowerCase().endsWith(".png") )
-                {
+                { //case it's an image
                     
-                    	URL u = MainUi.class.getResource(fileEntry.toString());
-                    	//list.add(u);
+                    	URL u = MainUi.class.getResource(fileEntry.toString()); //get the url
                         try {
-							list.add(fileEntry.toURI().toURL());
+							list.add(fileEntry.toURI().toURL()); //adding the url to the list
 						} catch (MalformedURLException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
                     
@@ -65,13 +63,6 @@ public abstract class CategorieImage implements Images {
         return list;
     }
     
-    public Path getPathe() {
-		StringBuilder fileName = new StringBuilder(this.getClass().getSimpleName());
-		fileName.append(".class");
-		URL catUrl = this.getClass().getResource(fileName.toString()); 
-		File classFile =  new File(catUrl.getPath());
-		return Paths.get(classFile.getParent());
-	}
 
 
     /**
@@ -80,12 +71,12 @@ public abstract class CategorieImage implements Images {
      * @return the list of the URL of the photos 
      */
     public List<URL> getRandomPhotosURL(int nbPhotos){
-        ArrayList<URL> listPhotos = new ArrayList<URL>();
-        listPhotos.addAll(getPhotos());
+        ArrayList<URL> listPhotos = new ArrayList<URL>(); 
+        listPhotos.addAll(getPhotos()); //get all the images in the subdirectories
         ArrayList<URL> listRandomPhotos = new ArrayList<URL>();
-        Random rand = new Random();
-        for (int i = 0; i < nbPhotos ; i ++){
-            int indexRandom = rand.nextInt(listPhotos.size());
+        Random rand = new Random(); 
+        for (int i = 0; i < nbPhotos ; i ++){ 
+            int indexRandom = rand.nextInt(listPhotos.size()); //get a random index
             listRandomPhotos.add(listPhotos.get(indexRandom));
             listPhotos.remove(indexRandom);
         }
@@ -97,7 +88,7 @@ public abstract class CategorieImage implements Images {
      * @return A random url of an image
      */
     public URL getRandomPhotosURL(){
-        return getRandomPhotosURL(1).get(0);
+        return getRandomPhotosURL(1).get(0); //call for one image
     }
 
     /**
@@ -106,7 +97,7 @@ public abstract class CategorieImage implements Images {
      * @return true if the url is contained
      */
     public boolean isPhotoCorrect(URL address){ 
-    	return getPhotos().contains(address); 
+    	return getPhotos().contains(address); //check if the url is inside the list
     }
 
 
