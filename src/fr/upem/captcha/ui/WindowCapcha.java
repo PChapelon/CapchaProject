@@ -198,7 +198,6 @@ public class WindowCapcha {
             listImages.add(u);
         }
         
-        System.out.println("nb images " + numberImages); //Paul
         for( URL u : listImages) {
             try {
                 frame.add(createLabelImage(u));
