@@ -1,12 +1,18 @@
 package fr.upem.captcha.ui.images.animaux.reels;
 
-import fr.upem.captcha.ui.images.I_Images;
 import fr.upem.captcha.ui.images.Images;
 
-public class Reel extends Images implements I_Images {
+
+import fr.upem.captcha.ui.images.CategorieImage;
+
+/**
+ * 
+ * @author paulchapelon
+ */
+
+public class Reel extends CategorieImage implements Images {
 
     public Reel(){
-        path = "images/animaux/reels";
     }
 
     public String toString(){

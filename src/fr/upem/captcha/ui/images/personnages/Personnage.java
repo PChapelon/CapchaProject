@@ -1,12 +1,17 @@
 package fr.upem.captcha.ui.images.personnages;
 
-import fr.upem.captcha.ui.images.I_Images;
 import fr.upem.captcha.ui.images.Images;
 
-public class Personnage  extends Images implements I_Images {
+
+import fr.upem.captcha.ui.images.CategorieImage;
+
+/**
+ * 
+ * @author paulchapelon
+ */
+public class Personnage  extends CategorieImage implements Images {
 
     public Personnage(){
-        path = "images/personnages";
     }
 
     public String toString(){

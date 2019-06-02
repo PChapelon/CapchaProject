@@ -1,7 +1,11 @@
 package fr.upem.captcha.ui;
 
 import java.util.Random;
-
+/**
+ * 
+ * @author paulchapelon
+ * Enumeration class which define all the type of images in the tree
+ */
 public enum typeDifficulte {
     ANIMAL, PERSONNAGE, ANIMALFICTIF, ANIMALREEL, PERSONNAGEJEUVIDEO,PERSONNAGEMANGA, PERSONNAGEFILM;
 
@@ -12,6 +16,9 @@ public enum typeDifficulte {
         return values()[rand.nextInt(values().length - 2) + 2];
     }
 
+    /**
+     * Function to display the enumeration in lower case
+     */
     @Override
     public String toString() {
         switch (this){
@@ -27,6 +34,10 @@ public enum typeDifficulte {
         }
     }
 
+    /**
+     * Function which give the equivalent for the enumeration type and the name class
+     * @return A string equivalent to the name class
+     */
     public String getTypeClass(){
         switch (this){
 

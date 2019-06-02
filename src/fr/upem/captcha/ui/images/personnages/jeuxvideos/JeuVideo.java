@@ -1,12 +1,17 @@
 package fr.upem.captcha.ui.images.personnages.jeuxvideos;
 
-import fr.upem.captcha.ui.images.I_Images;
 import fr.upem.captcha.ui.images.Images;
 
-public class JeuVideo  extends Images implements I_Images {
+
+import fr.upem.captcha.ui.images.CategorieImage;
+
+/**
+ * 
+ * @author paulchapelon
+ */
+public class JeuVideo  extends CategorieImage implements Images {
 
     public JeuVideo(){
-        path = "images/personnages/jeuxvideos";
     }
 
     public String toString(){

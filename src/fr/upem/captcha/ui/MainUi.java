@@ -6,10 +6,16 @@ import java.io.IOException;
 /*
 
 compilation (projet exemple)
-javac -d classes -sourcepath src src/fr/upem/capcha/ui/MainUi.java
+javac -d bin -sourcepath src src/fr/upem/captcha/ui/MainUi.java
 
 exécution
-java -cp classes fr.upem.capcha.ui.MainUi
+java -cp bin fr.upem.captcha.ui.MainUi
+ */
+
+
+/**
+ * @author paulchapelon
+ * Main class of the program
  */
 
 public class MainUi {

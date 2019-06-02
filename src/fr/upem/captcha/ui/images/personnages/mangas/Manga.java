@@ -1,12 +1,17 @@
 package fr.upem.captcha.ui.images.personnages.mangas;
 
-import fr.upem.captcha.ui.images.I_Images;
 import fr.upem.captcha.ui.images.Images;
 
-public class Manga extends Images implements I_Images {
+
+import fr.upem.captcha.ui.images.CategorieImage;
+
+/**
+ * 
+ * @author paulchapelon
+ */
+public class Manga extends CategorieImage implements Images {
 
     public Manga(){
-        path = "images/personnages/mangas";
     }
 
     public String toString(){

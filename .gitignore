@@ -1,7 +1,0 @@
-#
-.DS_Store
-bin/
-classes/
-*.jar
-.vs/*
-.idea/*

@@ -1,12 +1,16 @@
 package fr.upem.captcha.ui.images.animaux;
 
-import fr.upem.captcha.ui.images.I_Images;
 import fr.upem.captcha.ui.images.Images;
+import fr.upem.captcha.ui.images.CategorieImage;
 
-public class Animal extends Images implements I_Images {
+
+/**
+ * 
+ * @author paulchapelon
+ */
+public class Animal extends CategorieImage implements Images {
 
     public Animal(){
-        path = "images/animaux";
     }
 
     public String toString(){
